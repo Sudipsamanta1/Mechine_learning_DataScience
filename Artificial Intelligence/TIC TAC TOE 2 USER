@@ -1,0 +1,59 @@
+#TWO USER TIC TAC GAME
+
+
+# Initialize the game board
+board = [" " for _ in range(9)]
+
+# Function to print the game board
+def print_board(board):
+    print(" | ".join(board[:3]))
+    print("---------")
+    print(" | ".join(board[3:6]))
+    print("---------")
+    print(" | ".join(board[6:]))
+
+# Function to check for a win condition
+def check_win(board, player):
+    winning_combinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
+        [0, 4, 8], [2, 4, 6]              # Diagonals
+    ]
+    for combo in winning_combinations:
+        if all(board[i] == player for i in combo):
+            return True
+    return False
+
+# Function to check if the board is full
+def is_board_full(board):
+    return " " not in board
+
+# Main game loop
+current_player = "X"
+
+while True:
+    print_board(board)
+    print(f"Player {current_player}'s turn. Enter a position (0-8): ")
+    
+    try:
+        position = int(input())
+        if position < 0 or position > 8 or board[position] != " ":
+            print("Invalid move. Try again.")
+            continue
+        board[position] = current_player
+
+        if check_win(board, current_player):
+            print_board(board)
+            print(f"Player {current_player} wins!")
+            break
+        elif is_board_full(board):
+            print_board(board)
+            print("It's a draw!")
+            break
+
+        current_player = "O" if current_player == "X" else "X"
+
+    except ValueError:
+        print("Invalid input. Enter a valid position (0-8).")
+
+# End of the game
