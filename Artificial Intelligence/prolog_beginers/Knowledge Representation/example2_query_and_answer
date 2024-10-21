@@ -1,0 +1,38 @@
+Find all people who like pizza or pasta
+likes(Person, pizza), likes(Person, pasta).
+Find out who likes both pizza and ice cream
+?- likes(Person, pizza), likes(Person, ice_cream).
+Find all unique things liked by anyone
+setof(Thing, Person^likes(Person, Thing), Things)
+Find who likes something starting with 'b'
+ likes(Person, Thing), atom_chars(Thing, [b|_]).
+Find who likes more than one thing
+likes(Person, Thing1), likes(Person, Thing2), Thing1 \= Thing2.
+Find pairs of people who like the same thing
+likes(Person1, Thing), likes(Person2, Thing), Person1 \= Person2.
+:Mutual Likes (Bidirectional Rule)
+mutual_likes(Person1, Person2) :-
+    likes(Person1, Thing),
+    likes(Person2, Thing),
+    Person1 \= Person2.
+Implication (Conditional)
+likes_ice_cream_if_likes_pizza(Person) :-
+    likes(Person, pizza) -> likes(Person, ice_cream).
+Not a Particular Liker (Negation)
+does_not_like_biriyani(Person) :-
+    \+ likes(Person, biriyani).
+ Exclusive Likes (AND, OR)
+exclusive_likes_pizza_or_ice_cream(Person) :-
+    (likes(Person, pizza), \+ likes(Person, ice_cream));
+    (likes(Person, ice_cream), \+ likes(Person, pizza)).
+General Food Lover (AND)
+food_lover(Person) :-
+    likes(Person, pizza),
+    likes(Person, pasta).
+Someone who likes something exotic
+likes_exotic_food(Person) :-
+    likes(Person, radish);
+    likes(Person, mirchi);
+    likes(Person, biriyani).
+
+

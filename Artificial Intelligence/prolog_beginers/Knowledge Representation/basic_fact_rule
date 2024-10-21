@@ -1,0 +1,21 @@
+% Facts
+likes(john, action).
+likes(mary, drama).
+new_movie('Fast & Furious', action).
+new_movie('The Pursuit of Happyness', drama).
+friends(john, mary).
+
+% Implication: A person likes a movie if they like the genre and the movie is new.
+likes_movie(Person, Movie) :- likes(Person, Genre), new_movie(Movie, Genre).
+
+% Bidirectional relationship (friends share movie preferences):
+likes_movie(Person1, Movie) :- friends(Person1, Person2), likes_movie(Person2, Movie).
+likes_movie(Person2, Movie) :- friends(Person1, Person2), likes_movie(Person1, Movie).
+
+% More complex rule: A friend recommends a movie they like
+recommended_by_friend(Person, Movie) :- friends(Person, Friend), likes_movie(Friend, Movie).
+likes_movie(Person1, Movie) :- friends(Person1, Person2), likes_movie(Person2, Movie).
+likes_movie(Person2, Movie) :- friends(Person1, Person2), likes_movie(Person1, Movie).
+?- likes_movie(john, 'The Pursuit of Happyness').
+?- recommended_by_friend(john, 'The Godfather'); recommended_by_friend(mary, 'The Godfather').
+
